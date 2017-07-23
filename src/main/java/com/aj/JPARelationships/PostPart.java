@@ -14,6 +14,9 @@ public class PostPart {
     @Column(name = "BODY")
     private String body;
 
+    @OneToOne(mappedBy = "postPart")
+    private Post post;
+
     public Integer getPostPartId() {
         return postPartId;
     }
@@ -28,5 +31,13 @@ public class PostPart {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 }

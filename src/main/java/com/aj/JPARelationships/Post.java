@@ -3,14 +3,17 @@ package com.aj.JPARelationships;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "POST")
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "POST_ID")
     private Integer postId;
 
@@ -19,6 +22,13 @@ public class Post {
 
     @Column(name = "POST_TITLE")
     private String postTitle;
+
+    @OneToOne
+    @JoinColumn(name = "POST_PART_ID")
+    private PostPart postPart;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     public Integer getPostId() {
         return postId;
@@ -42,5 +52,39 @@ public class Post {
 
     public void setPostTitle(String postTitle) {
         this.postTitle = postTitle;
+    }
+
+    public PostPart getPostPart() {
+        return postPart;
+    }
+
+    public void setPostPart(PostPart postPart) {
+        this.postPart = postPart;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Post post = (Post) o;
+        return Objects.equals(postId, post.postId) &&
+                Objects.equals(postDate, post.postDate) &&
+                Objects.equals(postTitle, post.postTitle) &&
+                Objects.equals(comments, post.comments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(postId, postDate, postTitle, comments);
     }
 }

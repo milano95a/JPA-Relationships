@@ -1,17 +1,21 @@
 package com.aj.JPARelationships;
 
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
+import javax.transaction.Transactional;
 import java.util.Date;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class PostRepTest {
 
     @Autowired
@@ -28,5 +32,44 @@ public class PostRepTest {
         Post dbPost = repo.findOne(post.getPostId());
         assertNotNull(dbPost);
         System.out.println(dbPost.getPostTitle());
+    }
+
+
+    @Test
+    public void test2(){
+        String author1 = "Author1";
+        String body1 = "Body1";
+        Comment comment1 = new Comment();
+        comment1.setAuthor(author1);
+        comment1.setBody(body1);
+
+        String author2 = "Author2";
+        String body2 = "Body2";
+        Comment comment2 = new Comment();
+        comment2.setAuthor(author2);
+        comment2.setBody(body2);
+
+        PostPart postPart = new PostPart();
+        String body = "Post Part Body";
+        postPart.setBody(body);
+
+        Post post = new Post();
+        post.setPostDate(new Date());
+        post.setPostTitle("First Post");
+        post.setPostPart(postPart);
+        post.setComments(Lists.newArrayList(comment1,comment2));
+
+        repo.save(post);
+
+        Post dbPost = repo.findOne(post.getPostId());
+        assertNotNull(dbPost);
+        assertNotNull(dbPost.getPostPart());
+
+        assertTrue(dbPost.getComments().size() == 2);
+        assertThat(dbPost.getComments().get(0).getAuthor().equals(author1) ||dbPost.getComments().get(0).getAuthor().equals(author2));
+        assertThat(dbPost.getComments().get(0).getBody().equals(body1) ||dbPost.getComments().get(0).getBody().equals(body2));
+
+        assertTrue(dbPost.getComments().contains(comment1));
+        assertTrue(dbPost.getComments().contains(comment2));
     }
 }
