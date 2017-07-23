@@ -1,4 +1,4 @@
-package com.aj.JPARelationships;
+package com.aj.JPARelationships.entities;
 
 import javax.persistence.*;
 import java.util.Objects;

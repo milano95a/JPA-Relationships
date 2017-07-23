@@ -1,5 +1,8 @@
 package com.aj.JPARelationships;
 
+import com.aj.JPARelationships.entities.Post;
+import com.aj.JPARelationships.entities.PostPart;
+import com.aj.JPARelationships.repos.PostPartRepo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

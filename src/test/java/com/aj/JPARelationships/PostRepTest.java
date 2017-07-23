@@ -1,5 +1,10 @@
 package com.aj.JPARelationships;
 
+import com.aj.JPARelationships.entities.Comment;
+import com.aj.JPARelationships.entities.Post;
+import com.aj.JPARelationships.entities.PostPart;
+import com.aj.JPARelationships.entities.Tag;
+import com.aj.JPARelationships.repos.PostRepo;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -71,5 +77,34 @@ public class PostRepTest {
 
         assertTrue(dbPost.getComments().contains(comment1));
         assertTrue(dbPost.getComments().contains(comment2));
+    }
+
+    @Test
+    public void postTagRelationship(){
+
+        Tag tag1 = new Tag();
+        Tag tag2 = new Tag();
+
+        String java = "Java";
+        String spring = "Spring";
+
+        tag1.setName(java);
+        tag2.setName(spring);
+
+        Post post = new Post();
+        post.setPostDate(new Date());
+        post.setPostTitle("post title");
+        post.getTags().add(tag1);
+        post.getTags().add(tag2);
+
+        repo.save(post);
+
+        Post dbPost = repo.getOne(post.getPostId());
+        assertNotNull(dbPost);
+
+        List<Tag> tags = dbPost.getTags();
+        assertTrue(tags.size() == 2);
+        assertTrue(tags.contains(tag1));
+        assertTrue(tags.contains(tag2));
     }
 }

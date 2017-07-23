@@ -1,6 +1,8 @@
 package com.aj.JPARelationships;
 
-import org.assertj.core.api.BooleanAssert;
+import com.aj.JPARelationships.entities.Comment;
+import com.aj.JPARelationships.entities.Post;
+import com.aj.JPARelationships.repos.CommentRepo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,4 @@
-package com.aj.JPARelationships;
-
-import org.springframework.beans.factory.annotation.Autowired;
+package com.aj.JPARelationships.entities;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,6 +24,12 @@ public class Post {
     @OneToOne
     @JoinColumn(name = "POST_PART_ID")
     private PostPart postPart;
+
+    @ManyToMany
+    @JoinTable(name = "POST_TAG",
+            joinColumns = {@JoinColumn(name = "POST_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "TAG_ID")})
+    private List<Tag> tags = new ArrayList<Tag>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
@@ -68,6 +72,14 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override

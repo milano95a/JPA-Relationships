@@ -1,4 +1,6 @@
-package com.aj.JPARelationships;
+package com.aj.JPARelationships.entities;
+
+import com.aj.JPARelationships.entities.Post;
 
 import javax.persistence.*;
 
